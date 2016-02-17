@@ -30,65 +30,75 @@ function select(item) {
   }
 }
 
-select.prototype = {
-  set: function(selector) {
-    if (selector)
-    {
-      this.sel = selector;
-      return this;
-    }
-      throw "Must have selector value";
-  },
-  to: function(value) {
-    if (this.e) {
+select.fn = select.prototype;
+
+select.fn.set = function(selector) {
+  if (selector)
+  {
+    this.sel = selector;
+    return this;
+  }
+  throw "Must have selector value";
+}
+
+select.fn.to = function(value) {
+  if (this.e) {
       if (this.sel){
         this.e.style[this.sel] = value;
       }
       else if (this.eventType) {
         this.e.addEventListener(this.eventType, value)
+      } else if (this.html) {
+          this.e.innerHTML = value;
       }
     } else if (this.c) {
       if (this.sel){
-        for (var i = 0; i < this.c.length; i++)
-        {
+        for (var i = 0; i < this.c.length; i++) {
             this.c[i].style[this.sel] = value;
         }
-      }
-      else if (this.eventType) {
-        for (var i = 0; i < this.c.length; i++)
-        {
+      } else if (this.eventType) {
+        for (var i = 0; i < this.c.length; i++) {
             this.c[i].addEventListener(this.eventType, value);
+        }
+      } else if (this.html) {
+        for (var i = 0; i < this.c.length; i++) {
+            this.c[i].innerHTML = value;
         }
       }
     }
     return this;
-  },
-  from: function(value) {
-    if (this.e && this.eventType) {
-        this.e.removeEventListener(this.eventType, value)
-    } else if (this.c && this.eventType) {
-      for (var i = 0; i < this.c.length; i++)
-      {
-          this.c[i].removeEventListener(this.eventType, value);
-      }
-    }
+}
 
-    return this;
-  },
-  attach: function(eventType) {
+select.fn.from = function(value) {
+  if (this.e && this.eventType) {
+         this.e.removeEventListener(this.eventType, value)
+  } else if (this.c && this.eventType) {
+       for (var i = 0; i < this.c.length; i++) {
+           this.c[i].removeEventListener(this.eventType, value);
+       }
+  }
+  return this;
+}
+
+select.fn.attach = function(eventType) {
     this.eventType = eventType;
-    return this;
-  },
-  detach: function(eventType) {
-    this.eventType = eventType;
-    return this;
-  },
-  at : function(index) {
-    if (this.c && this.c.length > index && this.c.length > 0) {
-        this.e = this.c[index];
-        this.c = null;
-    }
     return this;
   }
 
+select.fn.detach = function(eventType) {
+    this.eventType = eventType;
+    return this;
+}
+
+select.fn.at = function(index) {
+  if (this.c && this.c.length > index && this.c.length > 0) {
+      this.e = this.c[index];
+      this.c = null;
+  }
+  return this;
+}
+
+select.fn.setHtml = function() {
+    this.html = true;
+    return this;
 }
