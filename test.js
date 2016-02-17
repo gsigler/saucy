@@ -42,8 +42,8 @@ function Tag() {
 select('p').at(0).set("font-family").to("Courier");
 
 
-select('#para2').setHtml().to('I just changed this!');
-//select('#para2').set('html').to('I just changed this!');
-//select('#para2').setHtml('I just changed this');
+//select('#para2').setHtml().to('I just changed this!');
+select('#para').set('html').to('I just changed this!');
+select('#para2').setHtml('I just changed this');
 //select('#para2').getHtml();
 // select('p').get("font-family");

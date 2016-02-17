@@ -33,9 +33,13 @@ function select(item) {
 select.fn = select.prototype;
 
 select.fn.set = function(selector) {
-  if (selector)
-  {
+  if (selector.toLowerCase() === 'html') {
+    this.html = true;
+    this.sel = null;
+    return this;
+  } else if (selector) {
     this.sel = selector;
+    this.html = null;
     return this;
   }
   throw "Must have selector value";
@@ -98,7 +102,7 @@ select.fn.at = function(index) {
   return this;
 }
 
-select.fn.setHtml = function() {
-    this.html = true;
+select.fn.setHtml = function(value) {
+    this.set('html').to(value);
     return this;
 }
