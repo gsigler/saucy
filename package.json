@@ -1,0 +1,30 @@
+{
+  "name": "Saucy",
+  "version": "1.0.0",
+  "description": "A simple JavaScript library similar to jQuery",
+  "main": "index.html",
+  "dependencies": {
+    "jasmine-core": "^2.4.1",
+    "karma-chrome-launcher": "^0.2.2",
+    "karma": "^0.13.21",
+    "karma-jasmine": "^0.3.7"
+  },
+  "devDependencies": {
+    "karma": "^0.13.21",
+    "karma-chrome-launcher": "^0.2.2",
+    "karma-jasmine": "^0.3.7"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gsigler2/saucy.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gsigler2/saucy/issues"
+  },
+  "homepage": "https://github.com/gsigler2/saucy"
+}

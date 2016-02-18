@@ -1,8 +1,8 @@
-function select(item) {
+function Saucy(item) {
   if (item)
   {
       if (window === this) {
-       return new select(item);
+       return new Saucy(item);
       }
 
       if (item[0] === "#") {
@@ -30,9 +30,11 @@ function select(item) {
   }
 }
 
-select.fn = select.prototype;
+Saucy.fn = Saucy.prototype;
+var select = Saucy;
 
-select.fn.set = function(selector) {
+
+Saucy.fn.set = function(selector) {
   if (selector.toLowerCase() === 'html') {
     this.html = true;
     this.sel = null;
@@ -45,7 +47,7 @@ select.fn.set = function(selector) {
   throw "Must have selector value";
 }
 
-select.fn.to = function(value) {
+Saucy.fn.to = function(value) {
   if (this.e) {
       if (this.sel){
         this.e.style[this.sel] = value;
@@ -73,7 +75,7 @@ select.fn.to = function(value) {
     return this;
 }
 
-select.fn.from = function(value) {
+Saucy.fn.from = function(value) {
   if (this.e && this.eventType) {
          this.e.removeEventListener(this.eventType, value)
   } else if (this.c && this.eventType) {
@@ -84,17 +86,17 @@ select.fn.from = function(value) {
   return this;
 }
 
-select.fn.attach = function(eventType) {
+Saucy.fn.attach = function(eventType) {
     this.eventType = eventType;
     return this;
   }
 
-select.fn.detach = function(eventType) {
+Saucy.fn.detach = function(eventType) {
     this.eventType = eventType;
     return this;
 }
 
-select.fn.at = function(index) {
+Saucy.fn.at = function(index) {
   if (this.c && this.c.length > index && this.c.length > 0) {
       this.e = this.c[index];
       this.c = null;
@@ -102,7 +104,7 @@ select.fn.at = function(index) {
   return this;
 }
 
-select.fn.setHtml = function(value) {
+Saucy.fn.setHtml = function(value) {
     this.set('html').to(value);
     return this;
 }
