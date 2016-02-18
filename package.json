@@ -3,16 +3,18 @@
   "version": "1.0.0",
   "description": "A simple JavaScript library similar to jQuery",
   "main": "index.html",
-  "dependencies": {
-    "jasmine-core": "^2.4.1",
-    "karma-chrome-launcher": "^0.2.2",
-    "karma": "^0.13.21",
-    "karma-jasmine": "^0.3.7"
-  },
+  "dependencies": {},
   "devDependencies": {
+    "browserify": "^12.0.2",
+    "jasmine-core": "^2.4.1",
     "karma": "^0.13.21",
+    "karma-browserify": "^5.0.1",
     "karma-chrome-launcher": "^0.2.2",
-    "karma-jasmine": "^0.3.7"
+    "karma-jasmine": "^0.3.7",
+    "karma-phantomjs-launcher": "^1.0.0",
+    "karma-spec-reporter": "0.0.24",
+    "phantomjs-prebuilt": "^2.1.4",
+    "watchify": "^3.7.0"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

@@ -10,21 +10,21 @@ function Saucy(item) {
         this.c = null;
 
         if (this.e == null)
-          throw "Cannot Find ID";
+          throw new Error("Cannot find id");
       }
       else if (item[0] === ".") {
         this.c = document.getElementsByClassName(item.replace(".", ""));
         this.e = null;
 
         if (this.c.length == 0)
-          throw "Cannot Find Class";
+          throw new Error("Cannot find class");
       }
       else  {
         this.c = document.getElementsByTagName(item);
         this.e = null;
 
         if (this.c.length == 0)
-          throw "Cannot Find Tag";
+          throw new Error("Cannot find tag");
       }
       return this;
   }
@@ -32,6 +32,7 @@ function Saucy(item) {
 
 Saucy.fn = Saucy.prototype;
 var select = Saucy;
+
 
 
 Saucy.fn.set = function(selector) {
@@ -44,7 +45,7 @@ Saucy.fn.set = function(selector) {
     this.html = null;
     return this;
   }
-  throw "Must have selector value";
+  throw new Error("Must have selector value");
 }
 
 Saucy.fn.to = function(value) {
