@@ -39,6 +39,7 @@ Saucy.fn.set = function(selector) {
   if (selector.toLowerCase() === 'html') {
     this.html = true;
     this.sel = null;
+    //this.fn.to = SetToTypes.htmlSetElement;
     return this;
   } else if (selector) {
     this.sel = selector;
@@ -47,6 +48,34 @@ Saucy.fn.set = function(selector) {
   }
   throw new Error("Must have selector value");
 }
+
+var SetToTypes = {
+  htmlSetElement: function(value) {
+      this.e.innerHTML = value;
+  },
+  htmlSetContainer: function(value) {
+    for (var i = 0; i < this.c.length; i++) {
+        this.c[i].innerHTML = value;
+    }
+  },
+  styleSetElement: function(value) {
+      this.e.style[this.sel] = value;
+  },
+  styleSetContainer: function(value) {
+    for (var i = 0; i < this.c.length; i++) {
+        this.c[i].style[this.sel] = value;
+    }
+  },
+  eventSetElement: function(value) {
+      this.e.addEventListener(this.eventType, value)
+  },
+  eventSetContainer: function(value) {
+      for (var i = 0; i < this.c.length; i++) {
+          this.c[i].addEventListener(this.eventType, value);
+      }
+  }
+}
+
 
 Saucy.fn.to = function(value) {
   if (this.e) {
