@@ -26,6 +26,7 @@ function Saucy(item) {
         if (this.c.length == 0)
           throw new Error("Cannot find tag");
       }
+      this.toFunction;
       return this;
   }
 }
@@ -33,76 +34,23 @@ function Saucy(item) {
 Saucy.fn = Saucy.prototype;
 var select = Saucy;
 
-
-
+// Prototype functions
 Saucy.fn.set = function(selector) {
   if (selector.toLowerCase() === 'html') {
-    this.html = true;
-    this.sel = null;
-    //this.fn.to = SetToTypes.htmlSetElement;
+    this.toFunction = setters.htmlSet;
     return this;
   } else if (selector) {
     this.sel = selector;
-    this.html = null;
+    this.toFunction = setters.styleSet;
     return this;
   }
   throw new Error("Must have selector value");
 }
 
-var SetToTypes = {
-  htmlSetElement: function(value) {
-      this.e.innerHTML = value;
-  },
-  htmlSetContainer: function(value) {
-    for (var i = 0; i < this.c.length; i++) {
-        this.c[i].innerHTML = value;
-    }
-  },
-  styleSetElement: function(value) {
-      this.e.style[this.sel] = value;
-  },
-  styleSetContainer: function(value) {
-    for (var i = 0; i < this.c.length; i++) {
-        this.c[i].style[this.sel] = value;
-    }
-  },
-  eventSetElement: function(value) {
-      this.e.addEventListener(this.eventType, value)
-  },
-  eventSetContainer: function(value) {
-      for (var i = 0; i < this.c.length; i++) {
-          this.c[i].addEventListener(this.eventType, value);
-      }
-  }
-}
-
 
 Saucy.fn.to = function(value) {
-  if (this.e) {
-      if (this.sel){
-        this.e.style[this.sel] = value;
-      }
-      else if (this.eventType) {
-        this.e.addEventListener(this.eventType, value)
-      } else if (this.html) {
-          this.e.innerHTML = value;
-      }
-    } else if (this.c) {
-      if (this.sel){
-        for (var i = 0; i < this.c.length; i++) {
-            this.c[i].style[this.sel] = value;
-        }
-      } else if (this.eventType) {
-        for (var i = 0; i < this.c.length; i++) {
-            this.c[i].addEventListener(this.eventType, value);
-        }
-      } else if (this.html) {
-        for (var i = 0; i < this.c.length; i++) {
-            this.c[i].innerHTML = value;
-        }
-      }
-    }
-    return this;
+  this.toFunction(value);
+  return this;
 }
 
 Saucy.fn.from = function(value) {
@@ -118,15 +66,19 @@ Saucy.fn.from = function(value) {
 
 Saucy.fn.attach = function(eventType) {
     this.eventType = eventType;
+    this.toFunction = setters.eventSet;
     return this;
   }
 
 Saucy.fn.detach = function(eventType) {
     this.eventType = eventType;
+    this.toFunction = setters.eventSet;
     return this;
 }
 
 Saucy.fn.at = function(index) {
+  if (this.e)
+    return this;
   if (this.c && this.c.length > index && this.c.length > 0) {
       this.e = this.c[index];
       this.c = null;
@@ -137,4 +89,47 @@ Saucy.fn.at = function(index) {
 Saucy.fn.setHtml = function(value) {
     this.set('html').to(value);
     return this;
+}
+
+// Helpers
+var setters = {};
+
+setters.htmlSet = function(value) {
+    if (this.e)
+    {
+      this.e.innerHTML = value;
+    }
+    else
+    {
+      for (var i = 0; i < this.c.length; i++) {
+              this.c[i].innerHTML = value;
+      }
+    }
+}
+
+setters.styleSet = function(value) {
+    if (this.e)
+    {
+      this.e.style[this.sel] = value;
+    }
+    else
+    {
+      for (var i = 0; i < this.c.length; i++)
+      {
+          this.c[i].style[this.sel] = value;
+      }
+    }
+}
+
+setters.eventSet = function(value) {
+    if (this.e)
+    {
+      this.e.addEventListener(this.eventType, value)
+    }
+    else
+    {
+      for (var i = 0; i < this.c.length; i++) {
+          this.c[i].addEventListener(this.eventType, value);
+      }
+    }
 }

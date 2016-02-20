@@ -81,9 +81,10 @@ describe("Saucy", function() {
           select('#ParagraphId').set('html').to('Content');
           expect(this.paragraph.innerHTML).toEqual("Content");
 
-          select('#ParagraphId').setHtml('Change Two');
+          var paragraph2 = addElementToBody('p', 'ParagraphId','ParagraphClass', 'Test Paragraph');
+          select('.ParagraphClass').setHtml('Change Two');
           expect(this.paragraph.innerHTML).toEqual("Change Two");
-
+          expect(paragraph2.innerHTML).toEqual("Change Two");
         });
     });
 
