@@ -26,7 +26,7 @@ function Saucy(item) {
         if (this.c.length == 0)
           throw new Error("Cannot find tag");
       }
-      this.toFunction;
+      this.to;
       return this;
   }
 }
@@ -37,21 +37,16 @@ var select = Saucy;
 // Prototype functions
 Saucy.fn.set = function(selector) {
   if (selector.toLowerCase() === 'html') {
-    this.toFunction = setters.htmlSet;
+    this.to = to.html;
     return this;
   } else if (selector) {
     this.sel = selector;
-    this.toFunction = setters.styleSet;
+    this.to = to.style;
     return this;
   }
   throw new Error("Must have selector value");
 }
 
-
-Saucy.fn.to = function(value) {
-  this.toFunction(value);
-  return this;
-}
 
 Saucy.fn.from = function(value) {
   if (this.e && this.eventType) {
@@ -66,13 +61,13 @@ Saucy.fn.from = function(value) {
 
 Saucy.fn.attach = function(eventType) {
     this.eventType = eventType;
-    this.toFunction = setters.eventSet;
+    this.to = to.event;
     return this;
   }
 
 Saucy.fn.detach = function(eventType) {
     this.eventType = eventType;
-    this.toFunction = setters.eventSet;
+    this.to = to.event;
     return this;
 }
 
@@ -91,10 +86,10 @@ Saucy.fn.setHtml = function(value) {
     return this;
 }
 
-// Helpers
-var setters = {};
+// Differnet to methods
+var to = {};
 
-setters.htmlSet = function(value) {
+to.html = function(value) {
     if (this.e)
     {
       this.e.innerHTML = value;
@@ -105,9 +100,10 @@ setters.htmlSet = function(value) {
               this.c[i].innerHTML = value;
       }
     }
+      return this;
 }
 
-setters.styleSet = function(value) {
+to.style = function(value) {
     if (this.e)
     {
       this.e.style[this.sel] = value;
@@ -119,9 +115,10 @@ setters.styleSet = function(value) {
           this.c[i].style[this.sel] = value;
       }
     }
+    return this;
 }
 
-setters.eventSet = function(value) {
+to.event = function(value) {
     if (this.e)
     {
       this.e.addEventListener(this.eventType, value)
@@ -132,4 +129,5 @@ setters.eventSet = function(value) {
           this.c[i].addEventListener(this.eventType, value);
       }
     }
+      return this;
 }
