@@ -18,21 +18,28 @@ describe("Saucy", function() {
 
         it("can select an element by an id", function() {
           expect(select('#ParagraphId')).toBeDefined();
-          expect(select('#ParagraphId').e).toEqual(document.getElementById('ParagraphId'));
+          expect(select('#ParagraphId').element()).toEqual(document.getElementById('ParagraphId'));
           expect(function() {select("#notid")}).toThrowError("Cannot find id");
         });
 
         it("can select an element by a class", function() {
           expect(select('.ParagraphClass')).toBeDefined();
-          expect(select('.ParagraphClass').c).toEqual(document.getElementsByClassName('ParagraphClass'));
+          expect(select('.ParagraphClass').list()).toEqual(document.getElementsByClassName('ParagraphClass'));
           expect(function() {select(".notclass")}).toThrowError("Cannot find class");
         });
 
         it("can select an element by tag", function() {
           expect(select('p')).toBeDefined();
-          expect(select('p').c).toEqual(document.getElementsByTagName('p'));
+          expect(select('p').list()).toEqual(document.getElementsByTagName('p'));
           expect(function() {select("nottag")}).toThrowError("Cannot find tag");
         });
+
+        it("can select an element by selector", function() {
+          expect(select('p.ParagraphClass')).toBeDefined();
+          expect(select('p.ParagraphClass').list()).toEqual(document.querySelectorAll('p.ParagraphClass'));
+
+        });
+
 
         it("can set css properties for id's, classes or tags", function() {
           select('#ParagraphId').set('color').to('green');
@@ -60,9 +67,6 @@ describe("Saucy", function() {
           expect(this.paragraph2.style.fontSize).toEqual("100px");
         });
 
-        xit("can find an element by ", function() {
-            select('p')
-        });
 
         it("can change more than one property with one select ", function() {
           select('#ParagraphId')
@@ -116,7 +120,7 @@ describe("Saucy", function() {
             expect(timesCalled).toEqual(2);
         });
 
-        it("can detatch elements to dom events", function() {
+        it("can detatch elements from dom events", function() {
             select('p').attach('click').to(testEvent);
             this.paragraph.click();
             expect(timesCalled).toEqual(1);
@@ -127,6 +131,36 @@ describe("Saucy", function() {
         });
 
     });
+
+
+      describe("Saucy Helper Methods", function() {
+        it("can hide elements", function() {
+
+          select('p').hide();
+          expect(this.paragraph.style.display).toEqual('none');
+
+          select("#DivId").hide();
+          expect(this.div.style.display).toEqual('none');
+
+        });
+
+        it("can show elements", function() {
+            this.paragraph.style.display = "none";
+            expect(this.paragraph.style.display).toEqual('none');
+            select('#ParagraphId').show();
+            expect(this.paragraph.style.display).toEqual('inline');
+            select('#ParagraphId').show('table');
+              expect(this.paragraph.style.display).toEqual('table');
+        });
+
+        xit("can append elements", function() {
+
+        });
+
+        xit("can prepend elements", function() {
+
+        });
+      });
 
     function addElementToBody(elm, id, c, html) {
       var item = document.createElement(elm);

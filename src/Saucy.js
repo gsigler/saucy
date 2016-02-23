@@ -6,24 +6,24 @@ function Saucy(item) {
       }
 
       if (item[0] === "#") {
-        this.e = document.getElementById(item.replace("#", ""));
-        this.c = null;
+        this._e = document.getElementById(item.replace("#", ""));
+        // this._c = null;
 
-        if (this.e == null)
+        if (this._e == null)
           throw new Error("Cannot find id");
       }
       else if (item[0] === ".") {
-        this.c = document.getElementsByClassName(item.replace(".", ""));
-        this.e = null;
+        this._c = document.getElementsByClassName(item.replace(".", ""));
+        // this._e = null;
 
-        if (this.c.length == 0)
+        if (this._c.length == 0)
           throw new Error("Cannot find class");
       }
       else  {
-        this.c = document.getElementsByTagName(item);
-        this.e = null;
+        this._c = document.querySelectorAll(item);
+        // this._e = null;
 
-        if (this.c.length == 0)
+        if (this._c.length == 0)
           throw new Error("Cannot find tag");
       }
       this.to;
@@ -33,6 +33,14 @@ function Saucy(item) {
 
 Saucy.fn = Saucy.prototype;
 var select = Saucy;
+
+Saucy.fn.element = function() {
+  return this._e;
+}
+
+Saucy.fn.list = function() {
+  return this._c;
+}
 
 // Prototype functions
 Saucy.fn.set = function(selector) {
@@ -47,13 +55,40 @@ Saucy.fn.set = function(selector) {
   throw new Error("Must have selector value");
 }
 
+Saucy.fn.hide = function() {
+  if (this._e) {
+    this._e.style.display = "none";
+  }
+  else if (this._c){
+     for (var i = 0; i < this._c.length; i++) {
+       this._c[i].style.display = "none";
+     }
+  }
+}
+
+Saucy.fn.show = function(displayType) {
+  if (this._e) {
+    if (displayType)
+      this._e.style.display = displayType;
+    else
+      this._e.style.display = "inline"
+  }
+  else if (this._c){
+     for (var i = 0; i < this._c.length; i++) {
+       if (displayType)
+          this._c[i].style.display = displayType;
+      else
+        this._c[i].style.display = "inline";
+     }
+  }
+}
 
 Saucy.fn.from = function(value) {
-  if (this.e && this.eventType) {
-         this.e.removeEventListener(this.eventType, value)
-  } else if (this.c && this.eventType) {
-       for (var i = 0; i < this.c.length; i++) {
-           this.c[i].removeEventListener(this.eventType, value);
+  if (this._e && this.eventType) {
+         this._e.removeEventListener(this.eventType, value)
+  } else if (this._c && this.eventType) {
+       for (var i = 0; i < this._c.length; i++) {
+           this._c[i].removeEventListener(this.eventType, value);
        }
   }
   return this;
@@ -72,11 +107,11 @@ Saucy.fn.detach = function(eventType) {
 }
 
 Saucy.fn.at = function(index) {
-  if (this.e)
+  if (this._e)
     return this;
-  if (this.c && this.c.length > index && this.c.length > 0) {
-      this.e = this.c[index];
-      this.c = null;
+  if (this._c && this._c.length > index && this._c.length > 0) {
+      this._e = this._c[index];
+      this._c = null;
   }
   return this;
 }
@@ -90,43 +125,43 @@ Saucy.fn.setHtml = function(value) {
 var to = {};
 
 to.html = function(value) {
-    if (this.e)
+    if (this._e)
     {
-      this.e.innerHTML = value;
+      this._e.innerHTML = value;
     }
     else
     {
-      for (var i = 0; i < this.c.length; i++) {
-              this.c[i].innerHTML = value;
+      for (var i = 0; i < this._c.length; i++) {
+              this._c[i].innerHTML = value;
       }
     }
       return this;
 }
 
 to.style = function(value) {
-    if (this.e)
+    if (this._e)
     {
-      this.e.style[this.sel] = value;
+      this._e.style[this.sel] = value;
     }
     else
     {
-      for (var i = 0; i < this.c.length; i++)
+      for (var i = 0; i < this._c.length; i++)
       {
-          this.c[i].style[this.sel] = value;
+          this._c[i].style[this.sel] = value;
       }
     }
     return this;
 }
 
 to.event = function(value) {
-    if (this.e)
+    if (this._e)
     {
-      this.e.addEventListener(this.eventType, value)
+      this._e.addEventListener(this.eventType, value)
     }
     else
     {
-      for (var i = 0; i < this.c.length; i++) {
-          this.c[i].addEventListener(this.eventType, value);
+      for (var i = 0; i < this._c.length; i++) {
+          this._c[i].addEventListener(this.eventType, value);
       }
     }
       return this;
